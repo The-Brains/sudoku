@@ -20,7 +20,7 @@ class SudokuCell extends React.Component {
         function scroller(e) {
             const pageX = e.touches ? e.touches[0].pageX : e.pageX;
             const pageY = e.touches ? e.touches[0].pageY : e.pageY;
-            let scroll = orgY - y + pageY - x + pageX;
+            let scroll = orgY + (- y + pageY - x + pageX) * 2;
             if(scroll>0) {
                 orgY -= scroll;
                 scroll = 0;
@@ -34,12 +34,12 @@ class SudokuCell extends React.Component {
                     -this.state.scroll/scrollCellHeight)));
                 const digit = parseInt(this.props.fixedValue);
                 if(digit !== scrollDigit) {
-                    this.props.sudoku.setGrid(
-                        this.props.x,this.props.y,scrollDigit
-                    );
+                    this.props.sudoku.setGrid(this.props.x,this.props.y,scrollDigit);
                     this.props.sudoku.send();
                 }
             });
+            e.preventDefault();
+            e.stopPropagation();
         }
 
         function mouseUp(e) {
